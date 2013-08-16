@@ -9,6 +9,7 @@ class Toolbox(object):
 
         # List of tool classes associated with this toolbox
         self.tools = [createALRSFromFC]
+        # Here is a test comment
 
 
 class createALRSFromFC(object):
