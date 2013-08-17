@@ -191,7 +191,7 @@ class createALRSFromFC(object):
                         cursorFieldDict[field] = i
 
                     routeFieldIndex = cursorFields.index(routeFieldName)
-                    shapeFieldIndex = cursorFields.index(inputDsc.shapeFieldName)
+                    shapeFieldIndex = cursorFields.index("SHAPE@")
                     for feature in inFeatures:
                         arcpy.AddMessage('Loading route with RouteID ' + str(feature[routeFieldIndex]))
                         newRoute = routeTableCursor.newRow()
