@@ -190,8 +190,10 @@ class createALRSFromFC(object):
                     for i, field in enumerate(cursorFields):
                         cursorFieldDict[field] = i
 
+                    routeFieldIndex = cursorFields.index(routeFieldName)
+                    shapeFieldIndex = cursorFields.index(inputDsc.shapeFieldName)
                     for feature in inFeatures:
-                        arcpy.AddMessage('Loading route with RouteID ' + str(feature.getValue(routeFieldName)))
+                        arcpy.AddMessage('Loading route with RouteID ' + str(feature[routeFieldIndex]))
                         newRoute = routeTableCursor.newRow()
                         newRouteString = ""
                         for i, field in enumerate(cursorFields):
@@ -202,13 +204,13 @@ class createALRSFromFC(object):
 
                         routeTableCursor.insertRow(newRoute)
                         newCS = csCursor.newRow()
-                        newCS.ROUTEID = feature.getValue(routeFieldName)
+                        newCS.ROUTEID = feature[routeFieldIndex]
                         newCS.FROMDATE = defaultFromDate
                         newCS.ROADWAYID = x
                         newCS.NETWORKID = 1
                         csCursor.insertRow(newCS)
                         newCenterline = cCursor.newRow()
-                        newCenterline.Shape = feature.getValue(inputDsc.shapeFieldName)
+                        newCenterline.Shape = feature[shapeFieldIndex]
                         newCenterline.RoadwayID = x
                         newCenterline.FROMDATE = defaultFromDate
                         cCursor.insertRow(newCenterline)
