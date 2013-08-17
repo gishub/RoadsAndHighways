@@ -195,13 +195,6 @@ class createALRSFromFC(object):
                     for feature in inFeatures:
                         arcpy.AddMessage('Loading route with RouteID ' + str(feature[routeFieldIndex]))
                         newRoute = routeTableCursor.newRow()
-                        newRouteString = ""
-                        for i, field in enumerate(cursorFields):
-                            if i == 0:
-                                newRouteString = feature[i]
-                            else:
-                                newRouteString += "," + feature[i]
-
                         routeTableCursor.insertRow(newRoute)
                         newCS = csCursor.newRow()
                         newCS.ROUTEID = feature[routeFieldIndex]
