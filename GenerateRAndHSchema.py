@@ -107,7 +107,7 @@ def makeALRS(outputGDB, sr, lrsNetworks, lrsActivities, RouteIDLength = 12):
         arcpy.AddField_management(calibrationPointPath,'ROUTEID','String',0,0,RouteIDLength)
         arcpy.AddField_management(calibrationPointPath,'NETWORKID','SmallInteger',0,0,2)
         arcpy.AssignDomainToField_management(calibrationPointPath,'NETWORKID',networksDomainName)
-        arcpy.AddField_management(calibrationPointPath,'MEASURE','Double',0,0,8)
+        arcpy.AddField_management(calibrationPointPath,'MEASURE','Double',0,3,12)
         arcpy.AddField_management(calibrationPointPath,'FROMDATE','Date',0,0,8)
         arcpy.AddField_management(calibrationPointPath,'TODATE','Date',0,0,8)
         arcpy.AddMessage('Created calibration point schema')
