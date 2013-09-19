@@ -25,7 +25,7 @@ class InvalidArgumentsError(Exception):
 
 import arcpy, os, sys, traceback, array, math
 
-def makeALRS(outputGDB, sr, lrsNetworks, lrsActivities, RouteIDLength = 12):
+def makeALRS(outputGDB, sr, lrsNetworks, lrsActivities, RouteIDLength = 30):
     try:
         try:
             RouteIDLength = int(RouteIDLength)
