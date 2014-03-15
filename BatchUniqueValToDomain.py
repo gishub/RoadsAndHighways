@@ -29,5 +29,5 @@ for fieldName in fieldNames:
     arcpy.AddMessage('Added domain {0} to field {1}'.format(domainName, fieldName))
 
 arcpy.AddMessage('All done. Have a nice day!')
-arcpy.SetParameterAsText(4, targetTable)
+arcpy.SetParameterAsText(3, targetTable)
 

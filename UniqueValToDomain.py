@@ -17,17 +17,28 @@ def FindField(Table, FieldName):
     dsc = arcpy.Describe(Table)
     returnField = None
     for field in dsc.fields:
+        #arcpy.AddMessage('Comparing field name {0} to input {1}'.format((str.upper(str(field.Name))), str.upper(FieldName)))
         if str.upper(str(field.Name)) == str.upper(FieldName):
             returnField = field
+            #arcpy.AddMessage('Found the field')
             break
     return returnField
 
 def UniqueValueToDomain(Workspace, Table, Field_Name, Domain_Name):
     arcpy.env.overwriteOutput = True
     tempFRQTable = 'IN_MEMORY/FRQ'
+    tempFRQView = "frq_View"
+    
     InputField = FindField(Table, str(Field_Name))
-    # Process: Frequency
+    #arcpy.AddMessage(InputField.type)
+    if (InputField.type in [u'SmallInteger', u'Double', u'Long', u'OID', u'Single', u'Integer']):
+        notEmptySQL = """"Code" IS NULL"""
+    else:
+        notEmptySQL = """"Code" IS NULL OR "Code" = ''"""
+
+	# Process: Frequency
     arcpy.Frequency_analysis(Table, tempFRQTable, Field_Name)
+
 
     # Process: AddField
     arcpy.AddField_management(tempFRQTable, "Description", "TEXT")
@@ -37,8 +48,13 @@ def UniqueValueToDomain(Workspace, Table, Field_Name, Domain_Name):
     arcpy.CalculateField_management(tempFRQTable, "Description", "[" + Field_Name + "]", "VB", "")
     arcpy.CalculateField_management(tempFRQTable, "Code", "[" + Field_Name + "]", "VB", "")
 
+    #Delete empty codes
+    arcpy.MakeTableView_management(tempFRQTable,tempFRQView)
+    arcpy.SelectLayerByAttribute_management(tempFRQView,"NEW_SELECTION",notEmptySQL)
+    arcpy.DeleteRows_management(tempFRQView)
+
     # Process: TableToDomain
-    arcpy.TableToDomain_management(tempFRQTable, "Code", "Description", Workspace, Domain_Name, "Description", "REPLACE")
+    arcpy.TableToDomain_management(tempFRQView, "Code", "Description", Workspace, Domain_Name, "Description", "REPLACE")
 
     # Process: AssignDomainToField
     arcpy.AssignDomainToField_management(Table, Field_Name, Domain_Name)
